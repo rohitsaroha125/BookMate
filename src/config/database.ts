@@ -2,11 +2,18 @@ import { Sequelize } from 'sequelize';
 import { HttpError } from '../utils/errorHandler';
 
 const dbName = process.env.DB_NAME;
-const dbUser = process.env.DB_USER;
+const dbUser = process.env.DB_USERNAME;
 const dbPassword = process.env.DB_PASSWORD;
 const dbHost = process.env.DB_HOST;
 
 let sequelize: any;
+
+const pool = {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+}
 
 try{
     if (dbName && dbUser && dbPassword && dbHost) {

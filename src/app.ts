@@ -5,9 +5,13 @@ dotenv.config();
 
 import sequelize from './config/database'
 import { errorHandler } from './utils/errorHandler';
+import authRoutes from './routes/auth';
 
 const app = express()
 app.use(errorHandler)
+
+// routes handling
+app.use('/account', authRoutes)
 
 const port = process.env.PORT || 5000
 
