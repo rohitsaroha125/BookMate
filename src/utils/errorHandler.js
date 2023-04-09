@@ -17,6 +17,7 @@ const errorHandler = (error, req, res, next) => {
     const status = error instanceof HttpError ? error.statusCode : 500;
     const message = error instanceof HttpError ? error.message : 'Something went wrong';
     const stack = error.stack || '';
+    console.error(status, message, stack);
     if (process.env.NODE_ENV === 'production') {
         res.status(status).json({
             status: 'error',

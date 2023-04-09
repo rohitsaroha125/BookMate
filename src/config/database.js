@@ -7,8 +7,13 @@ const dbUser = process.env.DB_USERNAME;
 const dbPassword = process.env.DB_PASSWORD;
 const dbHost = process.env.DB_HOST;
 let sequelize;
+const pool = {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+};
 try {
-    console.log('env is ', dbName, dbUser, dbPassword, dbHost);
     if (dbName && dbUser && dbPassword && dbHost) {
         sequelize = new sequelize_1.Sequelize(dbName, dbUser, dbPassword, {
             host: dbHost,

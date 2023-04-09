@@ -8,10 +8,14 @@ import { errorHandler } from './utils/errorHandler';
 import authRoutes from './routes/auth';
 
 const app = express()
-app.use(errorHandler)
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 // routes handling
 app.use('/account', authRoutes)
+
+app.use(errorHandler)
 
 const port = process.env.PORT || 5000
 

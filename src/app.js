@@ -8,10 +8,13 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const database_1 = __importDefault(require("./config/database"));
 const errorHandler_1 = require("./utils/errorHandler");
-const example_1 = __importDefault(require("./routes/example"));
+const auth_1 = __importDefault(require("./routes/auth"));
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+// routes handling
+app.use('/account', auth_1.default);
 app.use(errorHandler_1.errorHandler);
-app.use('/', example_1.default);
 const port = process.env.PORT || 5000;
 // Check if there are any errors when initializing Sequelize
 if (database_1.default) {
