@@ -54,11 +54,6 @@ User.init({
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    defaultScope: {
-        attributes: {
-            exclude: ["password"]
-        }
-    },
     hooks: {
         beforeCreate: (user) => __awaiter(void 0, void 0, void 0, function* () {
             const saltRounds = 10;
