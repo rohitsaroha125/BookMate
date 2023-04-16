@@ -1,15 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-
-export class HttpError extends Error{
-    statusCode: number;
-    stack?: string;
-
-    constructor(statusCode: number, message: string, stack?: string) {
-        super(message)
-        this.statusCode = statusCode
-        this.stack = stack
-    }
-}
+import HttpError from "./HttpErrorClass";
 
 // error handler middleware
 export const errorHandler = (error: HttpError, req: Request, res: Response, next: NextFunction) => {

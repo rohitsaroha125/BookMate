@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const errorHandler_1 = require("../utils/errorHandler");
+const HttpErrorClass_1 = __importDefault(require("../utils/HttpErrorClass"));
 const dbName = process.env.DB_NAME;
 const dbUser = process.env.DB_USERNAME;
 const dbPassword = process.env.DB_PASSWORD;
@@ -23,7 +26,7 @@ try {
     else {
         const message = process.env.NODE_ENV === 'production' ? 'Something went wrong' : 'Please make sure all the variables are loaded properly in env file';
         const errorStack = new Error(message).stack;
-        throw new errorHandler_1.HttpError(502, message, errorStack);
+        throw new HttpErrorClass_1.default(502, message, errorStack);
     }
 }
 catch (err) {

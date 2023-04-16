@@ -4,19 +4,7 @@ import { Role } from "../utils/enums";
 import bcrypt, { hash } from 'bcrypt';
 
 class User extends Model {
-    public id!: number;
-    public email!: string;
-    public password!: string;
-    public name!: string;
-    public role!: Role.ADMIN | Role.STORE | Role.USER;
-  
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-
-    static init(sequelize: any){
-        return
-    }
-
+    static tableName = 'users';
     toJSON() {
         return { 
           ...this.get(),

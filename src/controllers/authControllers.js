@@ -12,6 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const HttpErrorClass_1 = __importDefault(require("../utils/HttpErrorClass"));
 const user_1 = __importDefault(require("../models/user"));
 class AuthController {
     constructor(model) {
@@ -32,6 +35,43 @@ class AuthController {
                     message: "Registration Successful!",
                     data: user.toJSON()
                 });
+            }
+            catch (err) {
+                console.log('error here is ', err);
+                next(err);
+            }
+        });
+    }
+    login(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email, password } = req.body;
+                const user = yield this.model.findOne({
+                    where: {
+                        email
+                    }
+                });
+                if (!user) {
+                    throw new HttpErrorClass_1.default(401, 'Email/Password doesn\'t exist');
+                }
+                else {
+                    const passwordMatch = bcrypt_1.default.compare(password, user.password);
+                    if (!passwordMatch) {
+                        throw new HttpErrorClass_1.default(401, 'Email/Password doesn\'t exist');
+                    }
+                    // Generate a JWT token and send it back to the client
+                    if (process.env.JWT_SECRET) {
+                        const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET);
+                        res.status(200).json({
+                            status: 'success',
+                            message: 'Login Succesful',
+                            data: token
+                        });
+                    }
+                    else {
+                        throw new HttpErrorClass_1.default(500, 'something went wrong');
+                    }
+                }
             }
             catch (err) {
                 next(err);

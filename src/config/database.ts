@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { HttpError } from '../utils/errorHandler';
+import HttpError from '../utils/HttpErrorClass';
 
 const dbName = process.env.DB_NAME;
 const dbUser = process.env.DB_USERNAME;
