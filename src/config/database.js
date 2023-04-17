@@ -20,7 +20,11 @@ try {
     if (dbName && dbUser && dbPassword && dbHost) {
         sequelize = new sequelize_1.Sequelize(dbName, dbUser, dbPassword, {
             host: dbHost,
-            dialect: 'mysql'
+            dialect: 'mysql',
+            dialectOptions: {
+                // Your mariadb options here
+                connectTimeout: 30000
+            }
         });
     }
     else {

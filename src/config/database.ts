@@ -19,7 +19,11 @@ try{
     if (dbName && dbUser && dbPassword && dbHost) {
         sequelize = new Sequelize(dbName, dbUser, dbPassword, {
             host: dbHost,
-            dialect: 'mysql'
+            dialect: 'mysql',
+            dialectOptions: {
+                // Your mariadb options here
+                connectTimeout: 30000
+            }
         });
     } else {
         const message = process.env.NODE_ENV === 'production' ? 'Something went wrong' : 'Please make sure all the variables are loaded properly in env file'

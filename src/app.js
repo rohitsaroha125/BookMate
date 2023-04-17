@@ -12,6 +12,9 @@ const auth_1 = __importDefault(require("./routes/auth"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.get('/', (req, res) => {
+    res.send('Hello world');
+});
 // routes handling
 app.use('/account', auth_1.default);
 app.use(errorHandler_1.errorHandler);
