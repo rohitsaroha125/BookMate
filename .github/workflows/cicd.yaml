@@ -19,7 +19,6 @@ jobs:
       - name: Build app
         run: npm run build
 
-jobs:
   deploy:
     runs-on: self-hosted
 
