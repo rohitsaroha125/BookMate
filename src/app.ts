@@ -26,8 +26,11 @@ const port = process.env.PORT || 5000
 // Check if there are any errors when initializing Sequelize
 if (sequelize) {
     sequelize.authenticate()
-  .then(() => {
+  .then(async() => {
     console.log('Database connection successful!');
+    // const result = await sequelize.query('SELECT * FROM Users;')
+    // console.log(result,'result');
+    
   })
   .catch((error: Error) => {
     console.error('Unable to connect to the database:', error);

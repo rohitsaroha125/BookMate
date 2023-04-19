@@ -50,9 +50,10 @@ User.init({
 }, {
     // Other model options go here
     sequelize: database_1.default,
-    modelName: 'User',
+    modelName: 'user',
     timestamps: true,
     createdAt: 'created_at',
+    tableName: 'users',
     updatedAt: 'updated_at',
     hooks: {
         beforeCreate: (user) => __awaiter(void 0, void 0, void 0, function* () {

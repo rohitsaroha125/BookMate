@@ -41,9 +41,10 @@ User.init({
 }, {
     // Other model options go here
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
     timestamps: true,
     createdAt: 'created_at',
+    tableName: 'users',
     updatedAt: 'updated_at',
     hooks: {
         beforeCreate: async (user: any) => {
