@@ -6,12 +6,22 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+
+  strategy:
+    matrix:
+      node-version: [19.x]
+      
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+            cache: 'yarn'
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Build app
-        run: npm run build
+        run: yarn run build
       - name: Start app
         run: pm2 restart 0
