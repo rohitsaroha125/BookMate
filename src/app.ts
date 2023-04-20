@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
-  res.send('bhai kyun marwa raha')
+  res.send('hello world')
 })
 
 // routes handling

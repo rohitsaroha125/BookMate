@@ -10,11 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Build app
-        run: npm run build
+        run: yarn run build
       - name: Start app
         run: pm2 restart 0
