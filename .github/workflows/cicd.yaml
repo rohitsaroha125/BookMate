@@ -6,17 +6,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
-
-  strategy:
-    matrix:
-      node-version: [19.x]
-      
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Install dependencies
-      run: yarn install
-    - name: Build app
-      run: yarn run build
-    - name: Start app
-      run: pm2 restart 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn install
+      - name: Build app
+        run: yarn run build
+      - name: Start app
+        run: pm2 restart 0
