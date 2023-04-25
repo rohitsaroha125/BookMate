@@ -6,6 +6,7 @@ dotenv.config();
 import sequelize from './config/database'
 import { errorHandler } from './utils/errorHandler';
 import authRoutes from './routes/auth';
+import categoryRoutes from './routes/categories';
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 // routes handling
 app.use('/account', authRoutes)
+app.use('/category', categoryRoutes)
 
 app.use(errorHandler)
 

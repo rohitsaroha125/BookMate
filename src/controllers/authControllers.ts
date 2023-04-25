@@ -14,6 +14,10 @@ interface UserAttributes{
     role: Role
 }
 
+interface AuthAttributes extends Request{
+    user?: UserAttributes
+}
+
 class AuthController {
     private model: typeof User;
 
@@ -44,7 +48,6 @@ class AuthController {
             })
         }
         catch(err){
-            console.log('error here is ', err)
             next(err)
         }
     }
@@ -83,6 +86,61 @@ class AuthController {
             }
         } catch(err) {
             next(err)
+        }
+    }
+
+    async protect(req: AuthAttributes, res: Response, next: NextFunction) {
+        try{
+            let token
+            if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+                token = req.headers.authorization.split(' ')[1]
+            }
+
+            if (!token) {
+                throw new HttpError(401, 'Authorization not present')
+            }
+
+            if (process.env.JWT_SECRET) {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: number, email: string }
+
+                const user = await this.model.findOne({
+                    where: {
+                        id: decoded.id
+                    }
+                })
+
+                if (!user) {
+                    throw new HttpError(404, 'No Such User found')
+                }
+
+                req.user = user as unknown as UserAttributes
+
+                next()
+            } else {
+                throw new HttpError(500, 'Authorization not done')
+            }
+        } catch(err) {
+            next(err)
+        }
+    }
+
+    restrictTo = async (...roles: Role[]) => {
+        return (req: AuthAttributes, res: Response, next: NextFunction) => {
+            try {
+                const { user } = req
+
+                if (!user) {
+                    throw new HttpError(401, 'You are not authorized to perform this action')
+                }
+
+                if (!roles.includes(user.role)) {
+                    throw new HttpError(403, 'You do not have permission to perform this action')
+                }
+
+                next()
+            } catch(err) {
+                next(err)
+            }
         }
     }
 }

@@ -18,6 +18,23 @@ const HttpErrorClass_1 = __importDefault(require("../utils/HttpErrorClass"));
 const user_1 = __importDefault(require("../models/user"));
 class AuthController {
     constructor(model) {
+        this.restrictTo = (...roles) => __awaiter(this, void 0, void 0, function* () {
+            return (req, res, next) => {
+                try {
+                    const { user } = req;
+                    if (!user) {
+                        throw new HttpErrorClass_1.default(401, 'You are not authorized to perform this action');
+                    }
+                    if (!roles.includes(user.role)) {
+                        throw new HttpErrorClass_1.default(403, 'You do not have permission to perform this action');
+                    }
+                    next();
+                }
+                catch (err) {
+                    next(err);
+                }
+            };
+        });
         this.model = model;
     }
     register(req, res, next) {
@@ -37,7 +54,6 @@ class AuthController {
                 });
             }
             catch (err) {
-                console.log('error here is ', err);
                 next(err);
             }
         });
@@ -71,6 +87,38 @@ class AuthController {
                     else {
                         throw new HttpErrorClass_1.default(500, 'something went wrong');
                     }
+                }
+            }
+            catch (err) {
+                next(err);
+            }
+        });
+    }
+    protect(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let token;
+                if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+                    token = req.headers.authorization.split(' ')[1];
+                }
+                if (!token) {
+                    throw new HttpErrorClass_1.default(401, 'Authorization not present');
+                }
+                if (process.env.JWT_SECRET) {
+                    const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+                    const user = yield this.model.findOne({
+                        where: {
+                            id: decoded.id
+                        }
+                    });
+                    if (!user) {
+                        throw new HttpErrorClass_1.default(404, 'No Such User found');
+                    }
+                    req.user = user;
+                    next();
+                }
+                else {
+                    throw new HttpErrorClass_1.default(500, 'Authorization not done');
                 }
             }
             catch (err) {

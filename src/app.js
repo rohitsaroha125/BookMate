@@ -18,14 +18,16 @@ dotenv_1.default.config();
 const database_1 = __importDefault(require("./config/database"));
 const errorHandler_1 = require("./utils/errorHandler");
 const auth_1 = __importDefault(require("./routes/auth"));
+const categories_1 = __importDefault(require("./routes/categories"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
-    res.send('Hello world');
+    res.send('hello world1');
 });
 // routes handling
 app.use('/account', auth_1.default);
+app.use('/category', categories_1.default);
 app.use(errorHandler_1.errorHandler);
 const port = process.env.PORT || 5000;
 // Check if there are any errors when initializing Sequelize

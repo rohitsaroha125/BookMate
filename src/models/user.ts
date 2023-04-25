@@ -5,6 +5,7 @@ import bcrypt, { hash } from 'bcrypt';
 
 class User extends Model {
     static tableName = 'users';
+
     toJSON() {
         return { 
           ...this.get(),
